@@ -21,7 +21,7 @@ def KSA(key):
     # define j
     j = 0
 
-    # expand the key into keystream
+    # scheduling loop
     for i in range(0, 255):
         j = (j + S[i] + key[i % keylength]) % 256
         
@@ -42,14 +42,18 @@ def PRNGA(S):
     # infinitely here.
     idx = 0
     while idx <= len(S):
+        
+        # advance bit i + 1
         i = (i + 1) % 256
+
+        # advance bit j + S[i]
         j = (j + S[i]) % 256
         
         # swap just like above
         S[i], S[j] = S[j], S[i]
         K = S[(S[i] + S[j]) % 256]
         
-        #since a stream is being generated, 
+        # since a stream is being generated, 
         # use yield instead of return
         yield K
 
